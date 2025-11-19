@@ -39,6 +39,71 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# Text Analysis Models
+class Sugerencia(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    original: str
+    problema: str
+    sugerencia: str
+
+class AnalysisRequest(BaseModel):
+    text: str
+    
+    @validator('text')
+    def validate_text(cls, v):
+        if not v or not v.strip():
+            raise ValueError('El texto no puede estar vacío')
+        if len(v) > 4000:
+            raise ValueError('El texto excede el límite de 4000 caracteres')
+        return v.strip()
+
+class AnalysisResponse(BaseModel):
+    sugerencias: List[Sugerencia]
+
+# System prompt for OpenAI
+SYSTEM_PROMPT = """Eres un asistente especializado en textos administrativos en español.
+Tu tarea es detectar fragmentos que dificultan la comprensión y proponer una reescritura clara, pero sin alterar el significado jurídico, normativo ni procedimental del texto original.
+
+Principios obligatorios:
+- Sigue estrictamente los criterios de la Guía panhispánica de lenguaje claro (RAE).
+- Mantén un nivel C1 de español: claro, preciso, administrativo y formal.
+- Nunca cambies el sentido jurídico, técnico o procedimental del texto.
+- La reescritura debe:
+  * ser más clara sin perder rigor
+  * eliminar giros burocráticos innecesarios
+  * acortar frases largas
+  * evitar ambigüedades
+  * mantener términos legales cuando sean necesarios
+- No inventes información, no completes lagunas, no modifiques plazos, órganos, derechos ni obligaciones.
+
+Qué debes detectar:
+- frases extensas o con demasiadas subordinadas
+- nominalizaciones y tecnicismos innecesarios
+- voz pasiva innecesaria
+- expresiones burocráticas ("en relación a", "a los efectos oportunos"…)
+- gerundios de posterioridad o dudosos
+- conectores confusos o redundantes
+
+Formato de salida obligatorio:
+Devuelve SIEMPRE un JSON válido con este formato:
+{
+  "sugerencias": [
+    {
+      "original": "texto exacto del fragmento problemático",
+      "problema": "explicación breve del motivo según criterios de lenguaje claro",
+      "sugerencia": "versión más clara y precisa sin modificar el sentido jurídico"
+    }
+  ]
+}
+
+Si el texto no necesita mejora, responde:
+{ "sugerencias": [] }
+
+Reglas de seguridad:
+- Si tienes dudas sobre el sentido jurídico, no lo modifiques.
+- Prefiere reformular solo la estructura, nunca el contenido normativo.
+- No cambies definiciones legales, plazos, porcentajes, nombres de órganos, procedimientos ni competencias."""
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
