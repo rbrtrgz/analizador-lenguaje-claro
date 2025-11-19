@@ -133,6 +133,75 @@ async def get_status_checks():
     
     return status_checks
 
+@api_router.post("/analyze", response_model=AnalysisResponse)
+async def analyze_text(request: AnalysisRequest):
+    try:
+        # Get API key from environment
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        # Initialize LLM Chat
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=str(uuid.uuid4()),
+            system_message=SYSTEM_PROMPT
+        )
+        
+        # Use OpenAI GPT-5.1
+        chat.with_model("openai", "gpt-5.1")
+        
+        # Create user message
+        user_message = UserMessage(
+            text=request.text
+        )
+        
+        # Send message and get response
+        logger.info(f"Sending text for analysis: {len(request.text)} characters")
+        response = await chat.send_message(user_message)
+        logger.info(f"Received response from LLM: {response[:200]}...")
+        
+        # Parse JSON response
+        try:
+            # Try to parse the response as JSON
+            response_data = json.loads(response)
+            
+            # Validate response structure
+            if "sugerencias" not in response_data:
+                raise ValueError("Response missing 'sugerencias' field")
+            
+            # Add IDs to suggestions if not present
+            sugerencias = []
+            for sug in response_data["sugerencias"]:
+                if "id" not in sug:
+                    sug["id"] = str(uuid.uuid4())
+                sugerencias.append(Sugerencia(**sug))
+            
+            return AnalysisResponse(sugerencias=sugerencias)
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse LLM response as JSON: {e}")
+            logger.error(f"Response was: {response}")
+            raise HTTPException(
+                status_code=500, 
+                detail="Error al procesar la respuesta del análisis"
+            )
+        except Exception as e:
+            logger.error(f"Error processing LLM response: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail="Error al procesar las sugerencias"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in analyze_text: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail="Error al analizar el texto. Por favor, intenta de nuevo."
+        )
+
 # Include the router in the main app
 app.include_router(api_router)
 
