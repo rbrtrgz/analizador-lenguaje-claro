@@ -29,24 +29,33 @@ const HomePage = () => {
     }
 
     setLoading(true);
-    // Simulamos una llamada al backend
-    setTimeout(() => {
-      const mockData = {
-        ...mockAnalysis,
-        sugerencias: mockAnalysis.sugerencias.map((s, idx) => ({
-          ...s,
-          id: idx + 1,
-          accepted: null
-        }))
-      };
-      setAnalysis(mockData);
-      setSuggestions(mockData.sugerencias);
-      setLoading(false);
+    try {
+      const response = await axios.post(`${API}/analyze`, {
+        text: text
+      });
+
+      const sugerenciasWithState = response.data.sugerencias.map(s => ({
+        ...s,
+        accepted: null
+      }));
+
+      setAnalysis({ sugerencias: sugerenciasWithState });
+      setSuggestions(sugerenciasWithState);
+      
       toast({
         title: "Análisis completado",
-        description: `Se encontraron ${mockData.sugerencias.length} sugerencias de mejora`
+        description: `Se encontraron ${sugerenciasWithState.length} sugerencias de mejora`
       });
-    }, 1500);
+    } catch (error) {
+      console.error('Error al analizar el texto:', error);
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "No se pudo analizar el texto. Por favor, intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAccept = (id) => {
