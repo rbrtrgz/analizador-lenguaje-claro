@@ -148,8 +148,8 @@ async def analyze_text(request: AnalysisRequest):
             system_message=SYSTEM_PROMPT
         )
         
-        # Use OpenAI GPT-5.1
-        chat.with_model("openai", "gpt-5.1")
+        # Use OpenAI GPT-4 (GPT-5.1 has validation issues)
+        chat.with_model("openai", "gpt-4")
         
         # Create user message
         user_message = UserMessage(
