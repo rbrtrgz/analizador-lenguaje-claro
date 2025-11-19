@@ -101,3 +101,49 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Aplicación para analizar textos administrativos conforme a la Guía panhispánica de lenguaje claro (RAE). Detecta expresiones confusas y sugiere versiones más comprensibles. Usa OpenAI GPT-5.1 con Emergent LLM key. Incluye botones para aceptar/rechazar sugerencias y límite de 4000 caracteres."
+
+backend:
+  - task: "Endpoint POST /api/analyze para análisis de texto con OpenAI GPT-5.1"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implementado endpoint /api/analyze con integración de OpenAI GPT-5.1 mediante emergentintegrations. Usa prompt especializado para análisis de lenguaje claro según RAE. Valida longitud máxima de 4000 caracteres. Devuelve JSON con sugerencias que incluyen: original, problema, sugerencia. Backend reiniciado correctamente."
+
+frontend:
+  - task: "Interfaz de usuario con textarea, botones aceptar/rechazar y vista previa de texto mejorado"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/HomePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implementado UI completo con diseño en colores claros y azul agua (cyan/sky). Incluye: textarea con límite de 4000 caracteres y contador, botón de análisis, lista de sugerencias con badges de colores, botones Aceptar/Rechazar para cada sugerencia, vista previa del texto mejorado cuando se aceptan sugerencias, notificaciones toast. Integrado con backend real mediante axios llamando a POST /api/analyze."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Endpoint POST /api/analyze para análisis de texto con OpenAI GPT-5.1"
+    - "Interfaz de usuario con textarea, botones aceptar/rechazar y vista previa de texto mejorado"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "He implementado la aplicación completa de análisis de lenguaje claro. Backend con OpenAI GPT-5.1 usando EMERGENT_LLM_KEY y frontend con diseño en colores claros y azul agua. Necesito que pruebes: 1) POST /api/analyze con texto de prueba administrativo, 2) Verificar que el límite de 4000 caracteres funciona, 3) Probar que las sugerencias se generan correctamente, 4) Verificar que los botones Aceptar/Rechazar funcionan y actualizan la vista previa del texto mejorado. El prompt del sistema está optimizado según las especificaciones del usuario para análisis de textos administrativos según la Guía panhispánica de lenguaje claro."
