@@ -5,8 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Badge } from '../components/ui/badge';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { FileText, CheckCircle2, XCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { mockAnalysis, MAX_CHARACTERS } from '../mock';
+import { MAX_CHARACTERS } from '../mock';
 import { toast } from '../hooks/use-toast';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const HomePage = () => {
   const [text, setText] = useState('');
