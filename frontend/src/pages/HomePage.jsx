@@ -102,11 +102,11 @@ const HomePage = () => {
       <header className="border-b border-sky-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-sky-500 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-200">
-              <FileText className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-sky-500 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-200 p-2">
+              <img src="/redactia-icon.png" alt="Redactia" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Analizador de Lenguaje Claro</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Redactia: analizador de lenguaje claro</h1>
               <p className="text-sm text-gray-600">Guía panhispánica de lenguaje claro (RAE)</p>
             </div>
           </div>
