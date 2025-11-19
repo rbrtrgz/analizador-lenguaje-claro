@@ -274,8 +274,8 @@ const HomePage = () => {
               <Card className="shadow-md border-sky-100">
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-cyan-100 to-sky-100 rounded-full flex items-center justify-center mb-4">
-                      <FileText className="w-10 h-10 text-cyan-600" />
+                    <div className="w-20 h-20 bg-gradient-to-br from-cyan-100 to-sky-100 rounded-full flex items-center justify-center mb-4 p-4">
+                      <img src="/redactia-icon.png" alt="Redactia" className="w-full h-full object-contain" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Sin análisis todavía
