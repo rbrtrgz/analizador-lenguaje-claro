@@ -76,6 +76,18 @@ Principios obligatorios:
   * mantener términos legales cuando sean necesarios
 - No inventes información, no completes lagunas, no modifiques plazos, órganos, derechos ni obligaciones.
 
+Criterios de la Guía panhispánica que debes aplicar:
+1. Evitar párrafos largos, densos y con demasiadas subordinadas.
+2. Sustituir formulismos, arcaísmos, latinismos, y clichés administrativos.
+3. Usar léxico común y preciso; eliminar palabras baúl y verbos comodín.
+4. Eliminar redundancias, ambigüedades y vaguedades semánticas.
+5. Mantener la precisión jurídica sin reducir contenido.
+6. Reordenar la información para que siga un orden lógico y fácil de leer.
+7. Sustituir gerundios indebidos, pasivas innecesarias y construcciones impersonales excesivas.
+8. Explicar términos técnicos cuando su comprensión no sea obvia.
+9. Extraer incisos o explicaciones laterales que interrumpan la línea argumental.
+10. Garantizar buena puntuación y acentuación para mejorar la claridad.
+
 Qué debes detectar:
 - frases extensas o con demasiadas subordinadas
 - nominalizaciones y tecnicismos innecesarios
@@ -83,6 +95,13 @@ Qué debes detectar:
 - expresiones burocráticas ("en relación a", "a los efectos oportunos"…)
 - gerundios de posterioridad o dudosos
 - conectores confusos o redundantes
+- formulismos, arcaísmos y latinismos
+- palabras baúl y verbos comodín
+- redundancias y ambigüedades
+- orden no lógico de la información
+- construcciones impersonales excesivas
+- incisos que interrumpan la línea argumental
+- problemas de puntuación y acentuación
 
 Formato de salida obligatorio:
 Devuelve SIEMPRE un JSON válido con este formato:
