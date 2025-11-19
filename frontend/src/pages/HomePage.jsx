@@ -107,7 +107,7 @@ const HomePage = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Redactia: analizador de lenguaje claro</h1>
-              <p className="text-sm text-gray-600">Guía panhispánica de lenguaje claro (RAE)</p>
+              <p className="text-sm text-gray-600">Una herramienta que facilita a las administraciones públicas la elaboración de textos más comprensibles y alineados con las buenas prácticas de claridad institucional.</p>
             </div>
           </div>
         </div>
