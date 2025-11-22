@@ -108,6 +108,7 @@ const HomePage = () => {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Redactia: analizador de lenguaje claro</h1>
               <p className="text-sm text-gray-600">Una herramienta que ayuda a las administraciones públicas a redactar textos más claros y comprensibles, siguiendo las buenas prácticas de lenguaje claro.</p>
+              <p className="text-xs text-gray-500 italic mt-1">Basado en la Guía Panhispánica de Lenguaje claro y accesible publicado por la R.A.E.</p>
             </div>
           </div>
         </div>
