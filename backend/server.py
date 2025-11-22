@@ -103,6 +103,9 @@ Qué debes detectar:
 - construcciones impersonales excesivas
 - incisos que interrumpan la línea argumental
 - problemas de puntuación y acentuación
+- errores ortográficos (faltas de ortografía, palabras mal escritas)
+- tildes incorrectas o faltantes
+- uso incorrecto de mayúsculas y minúsculas
 
 Formato de salida obligatorio:
 Devuelve SIEMPRE un JSON válido con este formato:
