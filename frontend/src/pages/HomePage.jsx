@@ -134,7 +134,7 @@ const HomePage = () => {
                         setText(e.target.value);
                       }
                     }}
-                    placeholder="Ejemplo: En relación a la presente comunicación, procedemos a comunicarle que..."
+                    placeholder="Ejemplo: Con relación a la presente comunicación, procedemos a informarle que..."
                     className="min-h-[300px] resize-none border-sky-200 focus:border-cyan-400 focus:ring-cyan-400"
                     maxLength={MAX_CHARACTERS}
                   />
