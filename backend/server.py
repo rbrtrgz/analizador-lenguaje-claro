@@ -87,6 +87,7 @@ Criterios de la Guía panhispánica que debes aplicar:
 8. Explicar términos técnicos cuando su comprensión no sea obvia.
 9. Extraer incisos o explicaciones laterales que interrumpan la línea argumental.
 10. Garantizar buena puntuación y acentuación para mejorar la claridad.
+11. Detectar y corregir errores ortográficos (faltas de ortografía, tildes incorrectas o faltantes, uso incorrecto de mayúsculas y minúsculas).
 
 Qué debes detectar:
 - frases extensas o con demasiadas subordinadas
