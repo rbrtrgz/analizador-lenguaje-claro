@@ -205,15 +205,27 @@ async def analyze_text(request: AnalysisRequest):
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse LLM response as JSON: {e}")
             logger.error(f"Response was: {response}")
+            # Check if response indicates API key issue
+            if "insufficient_quota" in response.lower() or "rate_limit" in response.lower():
+                raise HTTPException(
+                    status_code=503,
+                    detail="Servicio temporalmente no disponible. Por favor, intenta más tarde."
+                )
             raise HTTPException(
                 status_code=500, 
-                detail="Error al procesar la respuesta del análisis"
+                detail="Error al procesar la respuesta del análisis. Por favor, intenta de nuevo."
             )
         except Exception as e:
             logger.error(f"Error processing LLM response: {e}")
+            error_msg = str(e)
+            if "insufficient_quota" in error_msg.lower() or "rate_limit" in error_msg.lower():
+                raise HTTPException(
+                    status_code=503,
+                    detail="Servicio temporalmente no disponible. Por favor, intenta más tarde."
+                )
             raise HTTPException(
                 status_code=500,
-                detail="Error al procesar las sugerencias"
+                detail="Error al procesar las sugerencias. Por favor, intenta de nuevo."
             )
             
     except HTTPException:
