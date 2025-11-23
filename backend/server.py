@@ -160,38 +160,38 @@ async def get_status_checks():
 async def analyze_text(request: AnalysisRequest):
     try:
         # Get API key from environment
-        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        api_key = os.environ.get('OPENAI_API_KEY')
         if not api_key:
             raise HTTPException(status_code=500, detail="API key not configured")
         
-        # Initialize LLM Chat
-        chat = LlmChat(
-            api_key=api_key,
-            session_id=str(uuid.uuid4()),
-            system_message=SYSTEM_PROMPT
-        )
-        
-        # Use OpenAI GPT-4 (GPT-5.1 has validation issues)
-        chat.with_model("openai", "gpt-4")
-        
-        # Create user message
-        user_message = UserMessage(
-            text=request.text
-        )
+        # Initialize OpenAI client
+        client = AsyncOpenAI(api_key=api_key)
         
         # Send message and get response
         logger.info(f"Sending text for analysis: {len(request.text)} characters")
         try:
-            response = await chat.send_message(user_message)
-            logger.info(f"Received response from LLM: {response[:200]}...")
+            completion = await client.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": request.text}
+                ],
+                temperature=0.3,
+                max_tokens=2000
+            )
+            
+            response = completion.choices[0].message.content
+            logger.info(f"Received response from OpenAI: {response[:200]}...")
+            
         except Exception as llm_error:
-            logger.error(f"LLM API Error: {str(llm_error)}")
-            if "insufficient_quota" in str(llm_error).lower():
+            logger.error(f"OpenAI API Error: {str(llm_error)}")
+            error_str = str(llm_error).lower()
+            if "insufficient_quota" in error_str or "quota" in error_str:
                 raise HTTPException(
                     status_code=503,
-                    detail="Balance de créditos insuficiente. Por favor, recarga tu balance."
+                    detail="Balance de créditos insuficiente en OpenAI. Por favor, recarga tu balance."
                 )
-            elif "rate_limit" in str(llm_error).lower():
+            elif "rate_limit" in error_str:
                 raise HTTPException(
                     status_code=429,
                     detail="Límite de uso excedido. Por favor, intenta en unos minutos."
@@ -199,7 +199,7 @@ async def analyze_text(request: AnalysisRequest):
             else:
                 raise HTTPException(
                     status_code=500,
-                    detail=f"Error al conectar con el servicio de análisis: {str(llm_error)}"
+                    detail=f"Error al conectar con OpenAI: {str(llm_error)}"
                 )
         
         # Parse JSON response
