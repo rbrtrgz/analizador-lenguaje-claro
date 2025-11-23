@@ -181,8 +181,26 @@ async def analyze_text(request: AnalysisRequest):
         
         # Send message and get response
         logger.info(f"Sending text for analysis: {len(request.text)} characters")
-        response = await chat.send_message(user_message)
-        logger.info(f"Received response from LLM: {response[:200]}...")
+        try:
+            response = await chat.send_message(user_message)
+            logger.info(f"Received response from LLM: {response[:200]}...")
+        except Exception as llm_error:
+            logger.error(f"LLM API Error: {str(llm_error)}")
+            if "insufficient_quota" in str(llm_error).lower():
+                raise HTTPException(
+                    status_code=503,
+                    detail="Balance de créditos insuficiente. Por favor, recarga tu balance."
+                )
+            elif "rate_limit" in str(llm_error).lower():
+                raise HTTPException(
+                    status_code=429,
+                    detail="Límite de uso excedido. Por favor, intenta en unos minutos."
+                )
+            else:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Error al conectar con el servicio de análisis: {str(llm_error)}"
+                )
         
         # Parse JSON response
         try:
